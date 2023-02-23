@@ -91,6 +91,8 @@ func (mw *MutatingWebhook) MutateSecret(secret *corev1.Secret, vaultConfig Vault
 		return nil
 	}
 
+	mw.logger.Debugf("checking auth header value in secret mutate: %s", vaultConfig.VaultAuthHeader)
+
 	vaultClient, err := mw.newVaultClient(vaultConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to create vault client")

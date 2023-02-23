@@ -255,6 +255,7 @@ func (mw *MutatingWebhook) newVaultClient(vaultConfig VaultConfig) (*vault.Clien
 		)
 	}
 
+	mw.logger.Debugf("getting client without token with header: %s", vaultConfig.VaultAuthHeader)
 	return vault.NewClientFromConfig(
 		clientConfig,
 		vault.ClientRole(vaultConfig.Role),
