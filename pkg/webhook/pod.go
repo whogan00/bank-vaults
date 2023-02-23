@@ -358,6 +358,13 @@ func (mw *MutatingWebhook) mutateContainers(ctx context.Context, containers []co
 			})
 		}
 
+		if vaultConfig.VaultAuthHeader != "" {
+			container.Env = append(container.Env, corev1.EnvVar{
+				Name:  "VAULT_AUTH_HEADER",
+				Value: vaultConfig.VaultAuthHeader,
+			})
+		}
+
 		if vaultConfig.LogLevel != "" {
 			container.Env = append(container.Env, []corev1.EnvVar{
 				{

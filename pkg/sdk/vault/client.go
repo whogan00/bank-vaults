@@ -66,6 +66,7 @@ type clientOptions struct {
 	authMethod     ClientAuthMethod
 	existingSecret string
 	vaultNamespace string
+	authHeader     string
 }
 
 // ClientOption configures a Vault client using the functional options paradigm popularized by Rob Pike and Dave Cheney.
@@ -116,6 +117,12 @@ type ClientTimeout time.Duration
 
 func (co ClientTimeout) apply(o *clientOptions) {
 	o.timeout = time.Duration(co)
+}
+
+type ClientAuthHeader string
+
+func (co ClientAuthHeader) apply(o *clientOptions) {
+	o.authHeader = string(co)
 }
 
 // ClientLogger wraps a logur.Logger compatible logger to be used in the client.
@@ -183,6 +190,8 @@ const (
 	// NamespacedSecretAuthMethod is used for per namespace secrets
 	NamespacedSecretAuthMethod ClientAuthMethod = "namespaced"
 )
+
+const VaultAuthHeaderName = "X-Vault-AWS-IAM-Server-ID"
 
 // Client is a Vault client with Kubernetes support, token automatic renewing and
 // access to Transit Secret Engine wrapper
@@ -420,6 +429,9 @@ func NewClientFromRawClient(rawClient *vaultapi.Client, opts ...ClientOption) (*
 					var params *sts.GetCallerIdentityInput
 					svc := sts.New(stsSession)
 					stsRequest, _ := svc.GetCallerIdentityRequest(params)
+					if o.authHeader != "" {
+						stsRequest.HTTPRequest.Header.Add(VaultAuthHeaderName, o.authHeader)
+					}
 					singErr := stsRequest.Sign()
 					if singErr != nil {
 						return nil, singErr

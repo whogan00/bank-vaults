@@ -11,7 +11,7 @@ endif
 # Project variables
 PACKAGE = github.com/banzaicloud/bank-vaults
 BINARY_NAME ?= bank-vaults
-DOCKER_REGISTRY ?= ghcr.io/banzaicloud
+DOCKER_REGISTRY ?= ghcr.io/whogan00
 DOCKER_IMAGE = ${DOCKER_REGISTRY}/bank-vaults
 WEBHOOK_DOCKER_IMAGE = ${DOCKER_REGISTRY}/vault-secrets-webhook
 OPERATOR_DOCKER_IMAGE = ${DOCKER_REGISTRY}/vault-operator

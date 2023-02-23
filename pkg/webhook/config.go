@@ -85,6 +85,7 @@ type VaultConfig struct {
 	ObjectNamespace               string
 	MutateProbes                  bool
 	Token                         string
+	VaultAuthHeader               string
 }
 
 func parseVaultConfig(obj metav1.Object, ar *model.AdmissionReview) VaultConfig {
@@ -428,6 +429,12 @@ func parseVaultConfig(obj metav1.Object, ar *model.AdmissionReview) VaultConfig 
 
 	vaultConfig.Token = viper.GetString("vault_token")
 
+	if val, ok := annotations["vault.security.banzaicloud.io/vault-auth-header"]; ok {
+		vaultConfig.VaultAuthHeader = val
+	} else {
+		vaultConfig.VaultAuthHeader = viper.GetString("vault_auth_header")
+	}
+
 	return vaultConfig
 }
 
@@ -455,6 +462,7 @@ func SetConfigDefaults() {
 	viper.SetDefault("vault_skip_verify", "false")
 	viper.SetDefault("vault_path", "kubernetes")
 	viper.SetDefault("vault_auth_method", "jwt")
+	viper.SetDefault("vault_auth_header", "")
 	viper.SetDefault("vault_role", "")
 	viper.SetDefault("vault_tls_secret", "")
 	viper.SetDefault("vault_client_timeout", "10s")

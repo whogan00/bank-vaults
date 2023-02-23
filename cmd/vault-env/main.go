@@ -73,6 +73,7 @@ var sanitizeEnvmap = map[string]envType{
 	"VAULT_ROLE":                   {login: false},
 	"VAULT_PATH":                   {login: false},
 	"VAULT_AUTH_METHOD":            {login: false},
+	"VAULT_AUTH_HEADER":            {login: false},
 	"VAULT_TRANSIT_KEY_ID":         {login: false},
 	"VAULT_TRANSIT_PATH":           {login: false},
 	"VAULT_TRANSIT_BATCH_SIZE":     {login: false},
@@ -225,6 +226,7 @@ func main() {
 			vault.ClientRole(os.Getenv("VAULT_ROLE")),
 			vault.ClientAuthPath(os.Getenv("VAULT_PATH")),
 			vault.ClientAuthMethod(os.Getenv("VAULT_AUTH_METHOD")),
+			vault.ClientAuthHeader(os.Getenv("VAULT_AUTH_HEADER")),
 		)
 	}
 

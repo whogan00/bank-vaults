@@ -262,6 +262,7 @@ func (mw *MutatingWebhook) newVaultClient(vaultConfig VaultConfig) (*vault.Clien
 		vault.ClientAuthMethod(vaultConfig.AuthMethod),
 		vault.ClientLogger(logrusadapter.NewFromEntry(mw.logger)),
 		vault.VaultNamespace(vaultConfig.VaultNamespace),
+		vault.ClientAuthHeader(vaultConfig.VaultAuthHeader),
 	)
 }
 
